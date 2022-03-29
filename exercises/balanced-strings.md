@@ -72,7 +72,6 @@ Use the project in [tp3-balanced-strings](../code/tp3-balanced-strings) to compl
         </tr>
     </thead>
     <tbody>
-
         <tr>
             <td><a href="./fr.istic.vv/index.html">fr.istic.vv</a></td>
             <td>1</td>
