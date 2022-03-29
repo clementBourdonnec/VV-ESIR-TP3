@@ -58,8 +58,13 @@ class StringUtilsTest {
     }
 
     @Test
+    public void testErrorTwoSymbol2(){
+        assertFalse(string.isBalanced("(]"));
+    }
+
+    @Test
     public void testErrorWrongOrder(){
-        assertFalse(string.isBalanced("({)}"));
+        assertFalse(string.isBalanced("({[][)}]"));
     }
 
     @Test
