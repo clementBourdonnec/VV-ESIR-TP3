@@ -26,3 +26,7 @@ Use the project in [tp3-balanced-strings](../code/tp3-balanced-strings) to compl
 
 ## Answer
 
+1. The first test we did was the test with an empty string in order to test the fact that if it is not needed, we don't enter in any statement. Then, we will try to test every statement present in the function by testing all sorts of grouping symbols (`{}[]()`) simply first and then with imbriqued grouping symbols (ex:`{()}`). Finaly, we are testing that if there are other characters in the string, it don't infer in the proper functing of the function. After checking if the function is working well, we must test that the function detects well if there are not proper grouping symbols.  
+2. After evaluating the statement coverage, we noticed that there are some statement that were not tested. It was concerning one statement that was checking if there is a wrong closing grouping symbol, so we added a test to cover that statement.
+3. All the predicates used in the function has at most 2 boolean operators and every boolean operator has been tested so no change is needed.
+4. 
