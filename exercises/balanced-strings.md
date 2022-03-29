@@ -78,7 +78,6 @@ Use the project in [tp3-balanced-strings](../code/tp3-balanced-strings) to compl
             <td><div class="coverage_percentage">100% </div><div class="coverage_bar"><div class="coverage_complete width-100"></div><div class="coverage_legend">15/15</div></div></td>
             <td><div class="coverage_percentage">96% </div><div class="coverage_bar"><div class="coverage_complete width-96"></div><div class="coverage_legend">22/23</div></div></td>
         </tr>
-
      </tbody>
 </table>
 <br/>
