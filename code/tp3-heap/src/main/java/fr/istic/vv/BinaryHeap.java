@@ -11,7 +11,9 @@ class BinaryHeap<T> {
     private int maxCounter;
 
     public BinaryHeap(Comparator<T> comparator) {
+        // Heap creation is not working
         heap = (T[]) new Comparable[maxCounter];
+
         counter = 0;
         maxCounter = 20;
         this.comparator = comparator;
@@ -32,8 +34,9 @@ class BinaryHeap<T> {
     }
 
     public void push(T element) {
-        heap[counter] = element;
         counter++;
+        heap[counter] = element;
+
         reorderOnPush();
         if (counter == maxCounter) {
             maxCounter = maxCounter * 2;
@@ -80,4 +83,12 @@ class BinaryHeap<T> {
             next = comparator.compare(heap[2*next + 1],heap[2 * rChild + 2]);
         }
     }
+}
+
+class IntComparator implements Comparator<Integer>{
+    @Override
+    public int compare(Integer a, Integer b) {
+        return a.compareTo(a);
+    }
+
 }
