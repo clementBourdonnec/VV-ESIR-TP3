@@ -3,12 +3,20 @@ package fr.istic.vv;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 class Date implements Comparable<Date> {
 
     private int day;
     private int month;
     private int year;
+
+    private static List<Integer> months30 = Arrays.asList(4,6,9,11);
 
     public Date(int day, int month, int year) throws Exception{
         if(!isValidDate(day,month,year))
@@ -19,18 +27,19 @@ class Date implements Comparable<Date> {
     }
 
     public static boolean isValidDate(int day, int month, int year) {
-        String date = "";
-        date+=day+"-";
-        date+=month+"-";
-        date+=year;
-        try {
-            DateFormat df = new SimpleDateFormat("dd-mm-yyyy");
-            df.setLenient(false);
-            df.parse(date);
-            return true;
-        } catch (Exception e) {
-            return false;
+        if(day<1 || month>12 || month<1)return false;
+        if(months30.contains(month)){
+            if(day>30)return false;
         }
+        else{
+            if(day>31)return false;
+        }
+        if(isLeapYear(year)){
+            if(month == 2 && day>29)return false;
+        }
+        else if(month == 2 && day>28)return false;
+
+        return true;
     }
 
     public static boolean isLeapYear(int year) {
@@ -50,14 +59,22 @@ class Date implements Comparable<Date> {
     }
 
     public Date previousDate() throws Exception{
+        int newMonth = 0;
+        if(month-1 == 2){
+            if(isLeapYear(year))newMonth = 29;
+            else newMonth = 28;
+        }
+        else if(months30.contains(month-1))newMonth = 30;
+        else newMonth = 31;
+
         if(isValidDate(day-1,month, year)){
             return new Date(day-1,month, year);
         }
-        else if (isValidDate(31,month-1,year)){
-            return new Date(31,month-1, year);
+        else if (isValidDate(newMonth,month-1,year)){
+            return new Date(newMonth,month-1, year);
         }
         else{
-            return new Date(31,12,year-1);
+            return new Date(newMonth,12,year-1);
         }
     }
 
