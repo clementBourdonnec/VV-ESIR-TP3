@@ -1,94 +1,100 @@
 package fr.istic.vv;
 
-import java.lang.reflect.Array;
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 
 class BinaryHeap<T> {
-
     Comparator<T> comparator;
     private T[] heap;
     private int counter;
     private int maxCounter;
-
-    public BinaryHeap(Comparator<T> comparator) {
-        // Heap creation is not working
-        heap = (T[]) new Comparable[maxCounter];
-
+    
+    public BinaryHeap(Comparator<T> comparator) {    	
         counter = 0;
         maxCounter = 20;
         this.comparator = comparator;
+        heap = (T[]) new Comparable[maxCounter];
     }
-
-    public T pop() throws Exception {
-        if (counter == 0) throw new Exception("Empty heap");
-        T min = heap[0];
-        change(counter - 1, 0);
-        heap[counter - 1] = null;
-        counter--;
-        reorderOnPop();
-        return min;
+    
+    private int RightChild(int i) {
+    	return 2*i +2; 
     }
-
-    public T peek() {
-        return heap[0];
+    
+    private int LeftChild(int i) {
+    	return 2*i +1; 
     }
-
-    public void push(T element) {
-        counter++;
-        heap[counter] = element;
-
-        reorderOnPush();
-        if (counter == maxCounter) {
-            maxCounter = maxCounter * 2;
-            T[] tmp = (T[]) new Comparable[maxCounter];
-            for (int i = 0; i < heap.length; i++) {
-                tmp[i] = heap[i];
-            }
-            heap = tmp;
-        }
+    
+    private int parent(int i) {
+    	return (i-1)/2;
     }
-
-    public int count() {
-        return counter;
-    }
-
+    
     private void change(int e1, int e2) {
-        T tmp = heap[e1];
+        T tmp = heap[e2];
         heap[e2] = heap[e1];
         heap[e1] = tmp;
     }
+    
+    public T pop() throws Exception {
+    	if(count() <= 0) {
+    		throw new NoSuchElementException("Heap is empty");
+    	}
+    	
+    	if(counter == 1) {
+    		counter = 0;
+    		return heap[0];
+    	}
+    	
+    	T min = heap[0];
+    	heap[0] = heap[--counter];
+    	reOrganise(0);
 
-    private void reorderOnPush() {
-        int child = counter - 1;
-        int parent = (child - 1) / 2;
-
-        while (parent >= 0 && comparator.compare(heap[child], heap[parent]) < 0) {
-            change(child, parent);
-            child = parent;
-            parent = (child - 1) / 2;
-        }
+    	return min;
     }
+    
+    private void reOrganise(int i) {
+    	int left = LeftChild(i);
+    	int right = RightChild(i);
+    	int min = i;
+    	
+    	if(left < counter && comparator.compare(heap[left], heap[i]) < 0) {
+    		min = left;
+    	}
+    	
+    	if(right < counter && comparator.compare(heap[right], heap[min]) < 0) {
+    		min = right;
+    	}
+    	
+    	if(min != i) {
+    		change(min, i);
+    		reOrganise(min);
+    	}
+	}
 
-    private void reorderOnPop() {
-        int parent = 0;
-        int lChild = 2 * parent + 1;
-        int rChild = 2 * parent + 2;
-
-
-        int next = comparator.compare(heap[lChild],heap[rChild]);
-
-        while (next != -1) {
-            change(next, parent);
-            parent = next;
-            next = comparator.compare(heap[2*next + 1],heap[2 * rChild + 2]);
-        }
+	public T peek() {
+		if (counter == 0) throw new NoSuchElementException("Empty heap");
+		
+    	return heap[0];
+    }
+    
+    public void push(T element) {
+    	heap[counter] = element;
+    	
+    	int i=counter++;
+    	
+    	while(i !=0 && comparator.compare(heap[parent(i)], heap[i]) > 0) {
+    		change(parent(i), i);
+    		i=parent(i);
+    	}
+    }
+    
+    public int count() {
+    	return counter;
     }
 }
 
 class IntComparator implements Comparator<Integer>{
     @Override
     public int compare(Integer a, Integer b) {
-        return a.compareTo(a);
+        return a.compareTo(b);
     }
-
 }
