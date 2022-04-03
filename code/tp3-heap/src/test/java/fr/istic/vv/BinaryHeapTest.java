@@ -4,7 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
@@ -85,5 +88,26 @@ class BinaryHeapTest {
     	heap.pop();
     	
     	Assertions.assertThrows(NoSuchElementException.class, () -> heap.pop());
+    }
+    
+    @Test
+    public void testPop() throws Exception {
+    	Random rand = new Random(789456123);
+    	List<Integer> sorted = new LinkedList<>();
+    	List<Integer> result = new LinkedList<>();
+    	
+    	for(int i=0; i<100; i++) {
+    		int randInt = rand.nextInt();
+    		sorted.add(randInt);
+    		heap.push(randInt);
+    	}
+    	
+    	Collections.sort(sorted);
+    	
+    	for(int i=0; i<100; i++) {
+    		result.add(heap.pop());
+    	}
+    	
+    	assertTrue(sorted.equals(result));
     }
 }

@@ -1,11 +1,13 @@
 package fr.istic.vv;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 class BinaryHeap<T> {
     Comparator<T> comparator;
     private T[] heap;
+    private ArrayList<T> heap2;
     private int counter;
     private int maxCounter;
     
@@ -14,6 +16,7 @@ class BinaryHeap<T> {
         maxCounter = 20;
         this.comparator = comparator;
         heap = (T[]) new Comparable[maxCounter];
+        heap2 = (ArrayList<T>) new ArrayList<Comparable<T>>();
     }
     
     private int RightChild(int i) {
@@ -28,10 +31,10 @@ class BinaryHeap<T> {
     	return (i-1)/2;
     }
     
-    private void change(int e1, int e2) {
-        T tmp = heap[e2];
-        heap[e2] = heap[e1];
-        heap[e1] = tmp;
+    private void change(int e1, int e2) {        
+        T tmp = heap2.get(e2);
+        heap2.set(e2, heap2.get(e1));
+        heap2.set(e1, tmp);
     }
     
     public T pop() throws Exception {
@@ -41,11 +44,11 @@ class BinaryHeap<T> {
     	
     	if(counter == 1) {
     		counter = 0;
-    		return heap[0];
+    		return heap2.get(0);
     	}
     	
-    	T min = heap[0];
-    	heap[0] = heap[--counter];
+    	T min = heap2.get(0);
+    	heap2.set(0, heap2.get(--counter));
     	reOrganise(0);
 
     	return min;
@@ -56,11 +59,11 @@ class BinaryHeap<T> {
     	int right = RightChild(i);
     	int min = i;
     	
-    	if(left < counter && comparator.compare(heap[left], heap[i]) < 0) {
+    	if(left < counter && comparator.compare(heap2.get(left), heap2.get(i)) < 0) {
     		min = left;
     	}
     	
-    	if(right < counter && comparator.compare(heap[right], heap[min]) < 0) {
+    	if(right < counter && comparator.compare(heap2.get(right), heap2.get(min)) < 0) {
     		min = right;
     	}
     	
@@ -73,15 +76,16 @@ class BinaryHeap<T> {
 	public T peek() {
 		if (counter == 0) throw new NoSuchElementException("Empty heap");
 		
-    	return heap[0];
+		return heap2.get(0);
     }
     
     public void push(T element) {
-    	heap[counter] = element;
+
+    	heap2.add(counter, element);
     	
     	int i=counter++;
     	
-    	while(i !=0 && comparator.compare(heap[parent(i)], heap[i]) > 0) {
+    	while(i !=0 && comparator.compare(heap2.get(parent(i)), heap2.get(i)) > 0) {
     		change(parent(i), i);
     		i=parent(i);
     	}
